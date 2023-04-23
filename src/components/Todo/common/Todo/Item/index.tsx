@@ -1,53 +1,48 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from 'react';
 
-import uuid from "react-uuid";
+import uuid from 'react-uuid';
 import {
   Checkbox,
   Container,
   FormControl,
   makeStyles,
   TextField,
-} from "@material-ui/core";
-import { Reorder, useMotionValue } from "framer-motion";
-import CloseIcon from "@material-ui/icons/Close";
-import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
-import useRaisedShadow from "./useRaisedShadow";
-import { TodoItem } from "../../types";
+} from '@material-ui/core';
+import { Reorder, useMotionValue } from 'framer-motion';
+import CloseIcon from '@material-ui/icons/Close';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import useRaisedShadow from './useRaisedShadow';
+import { TodoItem } from '../../types';
 
 const useStyles = makeStyles({
   root: {
-    display: "flex",
-    width: "100%",
-    alignItems: "center",
-    zIndex: 0,
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center',
   },
   underline: {
-    "&&&:before": {
-      borderBottom: "none",
+    '&&&:before': {
+      borderBottom: 'none',
     },
   },
   textFeild: { 
-    textOverflow: "ellipsis",
-    display: "-webkit-box",
-    WebkitBoxOrient:"vertical",
-    padding: "10px 0px 7px",
-    overflow: "hidden"
+    padding: '10px 0px 7px',
   },
   dragIndicatorIcon: {
-    cursor: "grab",
+    cursor: 'grab',
   },
   closeIcon: {
-    cursor: "pointer",
-    padding: "2px",
-    "&:hover": {
-      backgroundColor: "#b9b5b5",
-      borderRadius: "50%",
+    cursor: 'pointer',
+    padding: '2px',
+    '&:hover': {
+      backgroundColor: '#b9b5b5',
+      borderRadius: '50%',
     },
   },
   reorderItem: {
-    listStyle: "none",
-    position: "relative",
-    backgroundColor: "white",
+    listStyle: 'none',
+    position: 'relative',
+    backgroundColor: 'white',
   },
 });
 
@@ -69,19 +64,20 @@ export const Item: FC<Props> = ({
   setItemsCallback,
   addItem,
   changeFocus,
-  focus,
+  focus
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
   const classes = useStyles();
 
-  const [itemText, setItemText] = useState("");
+  const [itemText, setItemText] = useState('');
   const [draggable, setDraggable] = useState(false);
 
   useEffect(() => {
-    if (focus === itemIndex) {
-      inputRef.current && inputRef.current.focus();
+    if(focus === itemIndex){
+      inputRef.current &&
+      inputRef.current.focus();
       changeFocus(-1);
     }
     setItemText(items[itemIndex].name);
@@ -148,12 +144,14 @@ export const Item: FC<Props> = ({
               onBlur={() => {
                 setItemsCallback([...items]);
               }}
-              onKeyPress={(e) => {
-                e.key === "Enter" &&
+              onKeyPress={
+                (e) => {
+                  e.key === "Enter" &&
                   itemIndex < 1 &&
-                  addItem({ name: "", uuid: uuid(), isComplete: false });
-                changeFocus(-1);
-              }}
+                  addItem({ name: "", uuid: uuid(), isComplete: false })
+                  changeFocus(-1)
+                }
+              }
               onKeyDown={(e) => {
                 const inputs = document.querySelectorAll("input[type='text']");
                 const inputsArray = Array.from(inputs);
@@ -162,7 +160,7 @@ export const Item: FC<Props> = ({
                 );
 
                 if (inputRef.current) {
-                  if (e.key === "ArrowUp") {
+                  if (e.key === 'ArrowUp') {
                     // Move cursor to the previous item
                     // Checks if the focused item is at the top
                     if (index >= 0) {
@@ -171,7 +169,7 @@ export const Item: FC<Props> = ({
                       ] as HTMLInputElement;
                       nextInputElement.focus();
                     }
-                  } else if (e.key === "ArrowDown") {
+                  } else if (e.key === 'ArrowDown') {
                     // Move cursor to the next item
                     // Checks if the focused item is at the bottom
                     if (index < inputsArray.length - 1) {
@@ -196,5 +194,6 @@ export const Item: FC<Props> = ({
       </Reorder.Item>
     );
   }
+  
   return null;
 };
